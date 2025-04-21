@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: not-chat
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python3 nft_chat.py
-    envVars:
-      - key: BOT_TOKEN

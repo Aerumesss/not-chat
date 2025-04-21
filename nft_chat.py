@@ -8,13 +8,8 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler, Cont
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# --- Вставьте токен сюда! (получите у @BotFather) ---
-BOT_TOKEN = "7535199249:AAHJnhqPj08EvntQqGoxGZrEpCFqfHJ2Yi8"  # ⚠️ Замените на свой!
-
-if not BOT_TOKEN:
-    raise ValueError("❌ BOT_TOKEN не установлен!")
-
-# Настройки рассылки
+# Конфигурация
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_USERNAMES = ['@NftProdazha1', '@NftProdazha3', '@NftProdazha4']
 MESSAGE = 'Не забудь заглянуть магазин нфт подарков @AxegarovShop'
 INTERVAL = 2 * 60  # 2 минуты
@@ -52,12 +47,20 @@ async def send_messages_loop(bot: Bot, context: ContextTypes.DEFAULT_TYPE):
                 logger.error(f"⚠️ Ошибка отправки в {chat}: {e}")
         await asyncio.sleep(INTERVAL)
 
-async def main():
-    app = Application.builder().token(BOT_TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button_handler))
-    logger.info("🚀 Бот запущен")
-    await app.run_polling()
+def main():
+    # Создаем новый event loop
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
+    try:
+        app = Application.builder().token(BOT_TOKEN).build()
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(CallbackQueryHandler(button_handler))
+        
+        logger.info("🚀 Бот запущен")
+        app.run_polling()
+    finally:
+        loop.close()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()

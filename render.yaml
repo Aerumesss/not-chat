@@ -6,4 +6,3 @@ services:
     startCommand: python3 nft_chat.py
     envVars:
       - key: BOT_TOKEN
-        value: YOUR_BOT_TOKEN_HERE

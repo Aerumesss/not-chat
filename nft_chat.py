@@ -1,7 +1,6 @@
 import os
 import asyncio
 import logging
-from dotenv import load_dotenv
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
@@ -9,11 +8,9 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler, Cont
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Загрузка .env
-load_dotenv()
+# --- Вставьте токен сюда! (получите у @BotFather) ---
+BOT_TOKEN = "7535199249:AAHJnhqPj08EvntQqGoxGZrEpCFqfHJ2Yi8"  # ⚠️ Замените на свой!
 
-# Получаем токен
-BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("❌ BOT_TOKEN не установлен!")
 

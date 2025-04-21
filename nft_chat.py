@@ -1,17 +1,19 @@
-import asyncio
 import os
+import asyncio
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
-BOT_TOKEN = os.getenv("7535199249:AAHJnhqPj08EvntQqGoxGZrEpCFqfHJ2Yi8")  # Не храни токен в коде!
-WEBHOOK_PATH = "/webhook"
-WEBHOOK_PORT = int(os.environ.get("PORT", 10000))
-WEBHOOK_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}{WEBHOOK_PATH}"
+# Получаем токен из переменной окружения
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise ValueError("❌ Переменная окружения BOT_TOKEN не установлена!")
 
+# Настройки рассылки
 CHAT_USERNAMES = ['@NftProdazha1', '@NftProdazha3', '@NftProdazha4']
 MESSAGE = 'Не забудь заглянуть магазин нфт подарков @AxegarovShop'
-INTERVAL = 2 * 60
+INTERVAL = 2 * 60  # 2 минуты
 
+# Флаг рассылки
 is_sending = False
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -38,9 +40,9 @@ async def send_messages_loop(bot: Bot):
         for chat in CHAT_USERNAMES:
             try:
                 await bot.send_message(chat_id=chat, text=MESSAGE)
-                print(f"Сообщение отправлено в {chat}")
+                print(f"✅ Сообщение отправлено в {chat}")
             except Exception as e:
-                print(f"Ошибка отправки в {chat}: {e}")
+                print(f"⚠️ Ошибка отправки в {chat}: {e}")
         await asyncio.sleep(INTERVAL)
 
 async def main():
@@ -49,16 +51,8 @@ async def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
 
-    # Установка webhook
-    await app.bot.set_webhook(WEBHOOK_URL)
-    print(f"Webhook установлен: {WEBHOOK_URL}")
+    print("🚀 Бот запущен")
+    await app.run_polling()
 
-    # Запуск webhook-сервера
-    await app.run_webhook(
-        listen="0.0.0.0",
-        port=WEBHOOK_PORT,
-        webhook_url=WEBHOOK_URL,
-    )
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     asyncio.run(main())

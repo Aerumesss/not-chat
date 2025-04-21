@@ -3,7 +3,7 @@ import os
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")  # Не храни токен в коде!
+BOT_TOKEN = os.getenv("7535199249:AAHJnhqPj08EvntQqGoxGZrEpCFqfHJ2Yi8")  # Не храни токен в коде!
 WEBHOOK_PATH = "/webhook"
 WEBHOOK_PORT = int(os.environ.get("PORT", 10000))
 WEBHOOK_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}{WEBHOOK_PATH}"
